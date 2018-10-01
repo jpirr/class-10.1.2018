@@ -5,12 +5,25 @@ date: "October 1, 2018"
 output: html_document
 ---
 
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 ```
 
-```{r}
-x <-read_csv("downloads/polls_IT-parliament_2018-10-01-2018")
+```{r, message = FALSE}
+x <- read_csv("polls_IT-parliament_2018-10-01.csv") %>%
+  select(date, LN, M5S, PD, FIPDLFI, firm, n ) %>%
+  filter(date >= "2017-09-26") %>%
+  gather(key = "party", value = "poll", LN, M5S, PD, FIPDLFI)
+  
 ```
+
+Purpose of this document to show polling results in Italy. 
+
+```{r}
+x %>%
+  ggplot(aes(x = date, y = poll, color = party)) + geom_point(size = 0.5, alpha = 0.1) + geom_smooth()
+```
+
+
 
